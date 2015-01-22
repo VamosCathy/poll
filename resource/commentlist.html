@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>评论列表 | 投票系统管理</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+			</div>
+			
+			<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+			<!--change pwd & login out-->
+		</div>
+	</div>
+	<!--navigation-->
+	<div class="content">
+		<div class="functionarea">
+			<ul>
+				<li><a href="../manage/managetch.php">指定授课教师</a></li>
+				<li>查看评论</li>
+				<li><a href="../manage/addcourse.php">添加课程</a></li>
+			</ul>
+		</div>
+		<div class="contentlist">
+		<?php
+		foreach ($tchInfo as $key => $value) {
+			echo '<div class="eachtch">';
+				echo '<div class="teacher-info">';
+					echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
+					echo '<p class="tch-name">' . $value['teachername'] . '</p>';
+				echo '</div>';
+				echo '<div class="tchcomment">';
+					$tch_comment_sql = 'SELECT * from `comments` where `t_id`=' . $value['t_id'];
+					$pdoTmp2 = $db->query($tch_comment_sql);
+					$tch_comment = $pdoTmp2->fetchAll();
+					echo '<ul>';
+					foreach ($tch_comment as $k => $v) {
+						$num = $k + 1;
+						echo '<li>' . $num . '.' . $v['comment'] . '</li>';
+					}
+					echo '</ul>';
+				echo '</div>';
+			echo '</div>';
+		}
+		?>
+		</div>
+	</div>
+</body>
+</html>

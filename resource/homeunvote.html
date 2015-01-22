@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>我的首页 | 信息安全系在线投票</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+			</div>
+			<div class="numbers">
+				<ul>
+				<?php
+				echo '<li>鲜花数：' . $stuFromDb[0]['flowernum'] . '</li>';
+				echo '<li>鸡蛋数：' . $stuFromDb[0]['eggnum'] . '</li>';
+				?>
+				</ul>
+			</div>
+			<div class="profile">你好，<?=$username ?></div>
+			<!--change pwd & login out-->
+		</div>
+	</div>
+	<!--navigation-->
+
+	<div class="content">
+	<?php
+	if(!empty($teacherData['tchinfo'])){
+		echo '<form action="../stu/submit.php" method="post">';
+		foreach ($teacherData['tchinfo'] as $key => $value) {
+			$coursesql = 'SELECT * from courses where t_id=' . $value['t_id'];
+			$courseTmp = $db->query($coursesql);
+			$courseFromDb = $courseTmp->fetchAll();
+			$courseData = array();
+			$courseData['courses'] = $courseFromDb;
+
+			echo '<div class="teacher">';
+				echo '<div class="teacher-info">';
+					echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
+					echo '<p class="tch-name">' . $value['teachername'] . '</p>';
+					echo '<p class="personal-intro">' . $value['aboutVoter'] . '</p>';
+				echo '</div>';
+				echo '<div class="poll-list">';
+					echo '<ul>';
+					foreach ($courseData['courses'] as $csKey => $csVal) {
+						echo '<li>' . $csVal['coursename'] . '</li>';
+						echo '<li>送鲜花：<input type="number" name="keyflw' . $csVal['c_id'] . '" min="0" max="10">扔鸡蛋：<input type="number" name="keyegg' . $csVal['c_id'] . '" min="0" max="5"></li>';
+					}	
+					echo '</ul>';
+				echo '</div>';
+				echo '<div class="suggestion">';
+					echo '<a href="../stu/comment.php?tid=' . $value['t_id'] . '">我要提建议</a>';
+				echo '</div>';
+			echo '</div>';
+		}
+		echo '<input type="submit" value="提交" />';
+		echo '</form>';
+	}
+	?>
+	</div>
+	<a href="../logout.php">登出</a>
+	<p><?=$_SESSION['submitErr']; ?></p>
+</body>
+</html>

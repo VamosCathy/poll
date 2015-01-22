@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>WELCOME</title>
+	<link rel="stylesheet" href="css/welcome.css" media="screen" type="text/css" />
+	<script src='js/jquery.min.js'></script>
+	<script src="js/index.js"></script>
+</head>
+<body>
+	<center>
+		<form action="login.php" method="post" id="formid">
+			<fieldset>
+				<!-- Entypo &#128100; = User -->
+				<input type="text" name="username" id="username" placeholder="请输入11位学号" pattern="^[0-9-_\.]{1,12}$" data-validation-msg="用户名必须为2～11位数字" required />
+				<label for="username" data-icon="&#128100;">Username</label>
+				<!-- Entypo &#128274; = Locked -->
+				<input type="password" name="password" id="password" placeholder="请输入口令" pattern="^[a-zA-Z0-9-_\.]{2,12}$" data-validation-msg="口令必须为2～12位字符" required />
+				<label for="password" data-icon="&#128274;">Password</label>
+				<!-- Entypo &#58542; = Right Arrow -->
+				<input type="button" id="buttonid" data-icon="&#58542;" onclick="isRequiredOk()" />
+			</fieldset>
+		</form>
+	</center>
+	<p><?php echo $_SESSION['msg']; unset($_SESSION['msg']);?></p>
+	<script type="text/javascript">
+		function isRequiredOk(){
+			var username = $("#username").val();
+			var password = $("#password").val();
+			if(username.length != 0 && password.length != 0){
+				$("#formid").submit(); 
+			}
+			else{
+				alert("用户名或密码不能为空");
+				return;
+			}
+		}
+	</script>
+	<p>若忘记密码，请联系管理员重置</p>
+</body>
+</html>

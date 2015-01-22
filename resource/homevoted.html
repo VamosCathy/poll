@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>我的首页 | 信息安全系在线投票</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+			</div>
+			<div class="numbers">
+				<ul>
+				<?php
+				echo '<li>鲜花数：' . $stuFromDb[0]['flowernum'] . '</li>';
+				echo '<li>鸡蛋数：' . $stuFromDb[0]['eggnum'] . '</li>';
+				?>
+				</ul>
+			</div>
+			<div class="profile">你好，<?=$username ?></div>
+			<!--change pwd & login out-->
+		</div>
+	</div>
+	<!--navigation-->
+
+	<div class="content">
+	<?php
+	if(!empty($teacherData['tchinfo'])){
+		foreach ($teacherData['tchinfo'] as $key => $value) {
+			echo '<div class="teacher">';
+				echo '<div class="teacher-info">';
+					echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
+					echo '<p class="tch-name">' . $value['teachername'] . '</p>';
+					echo '<p class="personal-intro">' . $value['aboutVoter'] . '</p>';
+				echo '</div>';
+				echo '<div class="poll-result">';
+					echo '<ul>';
+						echo '<li>已获得鲜花数：' . $value['getflowers'] . '</li>';
+						echo '<li>已获得鸡蛋数：' . $value['geteggs'] . '</li>';
+					echo '</ul>';
+				echo '</div>';
+				echo '<div class="suggestion">';
+					echo '<a href="../stu/comment.php?tid=' . $value['t_id'] . '">我要提建议</a>';
+				echo '</div>';
+			echo '</div>';
+		}
+	}
+	?>
+	</div>
+	<a href="../logout.php">登出</a>
+	<a href="../setting.php">设置</a>
+</body>
+</html>
