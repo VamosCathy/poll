@@ -10,8 +10,7 @@ else{
 	$confirmnewpwd = $_POST['confirmnewpwd'];
 
 	$conf = parse_ini_file(__DIR__ . '/conf/db.ini');
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+	require_once __DIR__ . '/conf/conn.php';
 
 	$selectpwd_sql = 'SELECT `pwd` from `pollers` where `u_id`=' . $_SESSION['uid'] . ' LIMIT 1';
 

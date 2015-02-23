@@ -10,8 +10,7 @@ else{
 
 //连接数据库
 	$conf = parse_ini_file(__DIR__ . '/conf/db.ini');
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+	require_once __DIR__ . '/conf/conn.php';
 
 	$stusql = 'SELECT * FROM `pollers` where `u_id`=' . $userid . ' LIMIT 1';
 	$pdoTmp = $db->query($stusql);

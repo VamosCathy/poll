@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>更新教师信息 | 信息安全系在线投票</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+				</div>
+				<div class="dltime">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+				<!--change pwd & login out-->
+			</div>
+		</div>
+		<!--navigation-->
+		<div class="content">
+			<div class="functionarea">
+				<ul>
+					<li>查看结果</li>
+					<ul>
+						<li><a href="../manage/currentvote.php">当前投票结果</a></li>
+						<li><a href="../manage/historyvote.php">历史投票结果</a></li>
+						<li><a href="../manage/currentcomment.php">查看本期评论</a></li>
+						<li><a href="../manage/historycomment.php">查看历史评论</a></li>
+					</ul>
+					<li><a href="../manage/setvote.php">投票期设置</a></li>
+					<li><a href="../manage/importstulist.php">学生选修课导入</a></li>
+					<li>课程管理</li>
+					<ul>
+						<li><a href="../manage/managetch.php">指定授课教师</a></li>
+						<li><a href="../manage/addcourse.php">添加课程</a></li>
+						<li><a href="../manage/deletecourse.php">删除课程</a></li>
+					</ul>
+					<li>教师管理</li>
+					<ul>
+						<li>更新教师信息</li>
+						<li><a href="../manage/addtch.php">添加教师</a></li>
+						<li><a href="../manage/deletetch.php">删除教师</a></li>
+					</ul>
+				</ul>
+			</div>
+			<div class="contentlist">
+				<div class="optionselect">
+					<select id="tchinfoid">
+						<?php
+						foreach ($tchinfoFromDb as $key => $value) {
+							echo '<option value="' . $value['t_id'] . '">' . $value['teachername'] . '</option>';
+						}
+						?>
+					</select>
+				</div>
+
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#tchinfoid").change(function(){
+				var selectVal = $(this).children('option:selected').val();
+				window.location = "updatetchinfosub.php?id=" + selectVal;
+			})
+		</script>
+	</body>
+	</html>

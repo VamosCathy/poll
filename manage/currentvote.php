@@ -12,6 +12,12 @@ elseif ($_SESSION['username'] != $conf['manageid']) {
 else{
 	require_once __DIR__ . '/../conf/conn.php';
 
-	require_once __DIR__ . '/../resource/manage.html';
+	//查询老师信息
+	$tch_sql = 'SELECT * from `teachers`';
+	$tchTmp = $db->query($tch_sql);
+	$tchFromDb = $tchTmp->fetchAll();
+
+	require_once __DIR__ . '/../resource/currentvote.html';
 }
+
 ?>

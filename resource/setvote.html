@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>投票期设置 | 信息安全系在线投票</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+	<script src='../js/adddate.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+				</div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+				<!--change pwd & login out-->
+			</div>
+		</div>
+		<!--navigation-->
+		<div class="content">
+			<div class="functionarea">
+				<ul>
+					<li>查看结果</li>
+					<ul>
+						<li><a href="../manage/currentvote.php">当前投票结果</a></li>
+						<li><a href="../manage/historyvote.php">历史投票结果</a></li>
+						<li><a href="../manage/currentcomment.php">查看本期评论</a></li>
+						<li><a href="../manage/historycomment.php">查看历史评论</a></li>
+					</ul>
+					<li>投票期设置</li>
+					<li><a href="../manage/importstulist.php">学生选修课导入</a></li>
+					<li>课程管理</li>
+					<ul>
+						<li><a href="../manage/managetch.php">指定授课教师</a></li>
+						<li><a href="../manage/addcourse.php">添加课程</a></li>
+						<li><a href="../manage/deletecourse.php">删除课程</a></li>
+					</ul>
+					<li>教师管理</li>
+					<ul>
+						<li><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
+						<li><a href="../manage/addtch.php">添加教师</a></li>
+						<li><a href="../manage/deletetch.php">删除教师</a></li>
+					</ul>
+				</ul>
+			</div>
+			<div class="contentlist">
+				<div id="currentvotesession">
+					<p>当前投票期截止时间：<?=$dltimeFromDb[0]['vote_dl']; ?></p>
+					<p><?=$msg ?></p>
+					<?php
+					if ($msg == '进行中') {
+						echo '<p><input id="terminatevotesession" type="button" value="终止当前投票"><input id="dlid" type="hidden" value="' . $dltimeFromDb[0]['dl_id'] . '"></p>';
+						echo '<p><input id="prolongvotesession" type="button" value="延长投票期"></p>';
+
+					}
+					?>
+				</div>
+				<div id="existvotesession">
+					<p>已添加但未开始的投票期：</p>
+					<?php
+					$id = 0;
+					foreach ($existvoteFromDb as $key => $value) {
+						if (strtotime("now") < strtotime($value['starttime'])) {
+							$id += 1;
+							echo $id . '.开始时间：' . $value['starttime'] . '结束时间：' . $value['vote_dl'] . '<input id="deletevoteid" type="button" value="删除该投票期" /><input type="hidden" value="' . $value['dl_id'] . '" />';
+						}
+					}
+					if ($id == 0) {
+						echo "无";
+					}
+					?>
+				</div>
+				<div>
+					<p>添加新投票期：（说明：若开始时间早于当前时间，）</p>
+					<p>开始时间：<input id="newstarttimeid" type="text" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')" />结束时间：<input id="newvotedlid" type="text" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')" /></p>
+					<p><input id="addnewvoteid" type="button" value="添加" /></p>
+				</div>
+				
+			</div>
+
+			<script type="text/javascript">
+				$("#terminatevotesession").click(function(){
+					var dlidVal = $(this).next().val();
+					$.post("terminatevotesession.php",{"dlid":dlidVal},function(result){
+						alert(result);
+					})
+				})
+				var flag = 0;
+				$("#prolongvotesession").click(function(){
+					if(flag ==1){
+						return;
+					}
+					var _p = $("<p>延长至：</p>");
+					var _input1 = $("<input type=\"text\" id=\"prolongtimeval\" onclick=\"SelectDate(this,'yyyy-MM-dd hh:mm:ss')\">");
+					var _input2 = $("<input id=\"prolongsubid\" type=\"button\" value=\"确定\" />");
+					_input2.click(function(){
+						var prolongVal = $("#prolongtimeval").val();
+						var dlidVal = $("#dlid").val();
+						$.post("prolongvotesession.php",{"prolongtime":prolongVal,"dlid":dlidVal},function(result){
+							if (result == 1) {
+								alert("延长投票期成功");
+								_p.remove();
+							}
+							else{
+								alert("延长时间超过了未开始投票期的开始时间，请修改");
+							}
+
+						});
+					});
+					_p.append(_input1);
+					_p.append(_input2);
+					$("#currentvotesession").append(_p);
+					flag =1;
+				})
+				$("#addnewvoteid").click(function(){
+					//alert("in");
+					var newstarttime = $("#newstarttimeid").val();
+					//alert(newstarttime);
+					var newdltime = $("#newvotedlid").val();
+					//alert(newdltime);
+					$.post("addnewvote.php",{"newstarttime":newstarttime,"newdltime":newdltime},function(result){
+						if (result == 2) {
+							alert("开始结束时间有误！");
+						}
+						else if (result == 3) {
+							alert("你设定了早于当前时间的投票开始时间，但当前投票期正在进行，请重新设定开始时间");
+						}
+						else if (result == 1) {
+							alert("添加成功！");
+						}
+						else if (result == 4) {
+							alert("与已有投票期时间冲突，请重新选择");
+						};
+					})
+				})
+				$("#deletevoteid").click(function(){
+					var dlid = $(this).next().val();
+					$.post("deletevotesession.php",{"dlid":dlid},function(result){
+						alert(result);
+					})
+				})
+			</script>
+		</div>
+	</body>
+	</html>

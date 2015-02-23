@@ -10,14 +10,13 @@ elseif ($_SESSION['username'] != $conf['manageid']) {
 	exit;
 }
 else{
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+	require_once __DIR__ . '/../conf/conn.php';
 
 //选取所有老师信息
 	$tch_info_sql = 'SELECT * from `teachers`';
 	$pdoTmp = $db->query($tch_info_sql);
 	$tchInfo = $pdoTmp->fetchAll();
-	require_once __DIR__ . '/../resource/commentlist.html';
+	require_once __DIR__ . '/../resource/currentcomment.html';
 }
 
 ?>

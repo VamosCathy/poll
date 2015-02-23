@@ -11,8 +11,7 @@ else{
 
 
 	$conf = parse_ini_file(__DIR__ . '/conf/db.ini');
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+	require_once __DIR__ . '/conf/conn.php';
 
 	$sql = 'SELECT * FROM `pollers` WHERE username=' . $username . ' LIMIT 1';
 

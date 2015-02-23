@@ -19,8 +19,7 @@ else{
 			header("location:index.php");
 			exit;
 		}
-		$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-		$db = new PDO($dsn,$conf['username'],$conf['password']);
+		require_once __DIR__ . '/../conf/conn.php';
 
 		$tch_sql = 'SELECT * from `teachers`';
 		$pdoTmp2 = $db->query($tch_sql);

@@ -14,8 +14,7 @@ else{
 		exit('非法访问！');
 	}
 	else{
-		$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-		$db = new PDO($dsn,$conf['username'],$conf['password']);
+		require_once __DIR__ . '/../conf/conn.php';
 
 		$search_course_sql = 'SELECT * from `courses` where `coursename`=\'' . $_POST['coursename'] . '\'';
 //echo $search_course_sql;

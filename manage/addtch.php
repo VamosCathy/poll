@@ -12,6 +12,6 @@ elseif ($_SESSION['username'] != $conf['manageid']) {
 else{
 	require_once __DIR__ . '/../conf/conn.php';
 
-	require_once __DIR__ . '/../resource/manage.html';
+	require_once __DIR__ . '/../resource/addtch.html';
 }
 ?>

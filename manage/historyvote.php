@@ -12,15 +12,16 @@ elseif ($_SESSION['username'] != $conf['manageid']) {
 else{
 	require_once __DIR__ . '/../conf/conn.php';
 
-	$course_sql = 'SELECT * from `courses`';
-	$pdoTmp = $db->query($course_sql);
-	$courseInfo = $pdoTmp->fetchAll();
-
+	//查询老师信息
 	$tch_sql = 'SELECT * from `teachers`';
-	$pdoTmp2 = $db->query($tch_sql);
-	$tchInfo = $pdoTmp2->fetchAll();
+	$tchTmp = $db->query($tch_sql);
+	$tchFromDb = $tchTmp->fetchAll();
 
-	require_once __DIR__ . '/../resource/managetch.html';
+	//查询历史期
+	$deadline_sql = 'SELECT * from `deadline` where `istohistory`=1';
+	$deadlineTmp = $db->query($deadline_sql);
+	$deadlineFromDb = $deadlineTmp->fetchAll();
+
+	require_once __DIR__ . '/../resource/historyvote.html';
 }
-
 ?>

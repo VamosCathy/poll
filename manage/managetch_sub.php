@@ -16,8 +16,7 @@ else{
 	else{
 		$temp=array('1','2','3','4','5','6','7','8','9','0');
 
-		$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-		$db = new PDO($dsn,$conf['username'],$conf['password']);
+		require_once __DIR__ . '/../conf/conn.php';
 
 		foreach ($_POST as $key => $value) {
 			$c_id_str = '';

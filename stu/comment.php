@@ -19,9 +19,7 @@ else{
 		header("location:./home.php");
 		exit;
 	}
-
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+require_once __DIR__ . '/../conf/conn.php';
 
 //查找教师信息
 	$tch_sql = 'SELECT * from `teachers` where `t_id`=' . $input['tid'] . ' LIMIT 1';

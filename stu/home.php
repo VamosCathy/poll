@@ -14,8 +14,7 @@ else{
 	$username = $_SESSION['username'];
 	$voted = $_SESSION['voted'];
 
-	$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-	$db = new PDO($dsn,$conf['username'],$conf['password']);
+	require_once __DIR__ . '/../conf/conn.php';
 
 //查询到该学生学的课程所对应的全部老师
 	$tchsql = 'SELECT * from teachers where t_id in (SELECT t_id from courses where c_id in (SELECT c_id from stucourses where u_id=' . $userid . '))';

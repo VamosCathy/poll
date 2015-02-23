@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>授课教师管理 | 信息安全系在线投票</title>
+	<title>当前投票结果 | 信息安全系在线投票</title>
 	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
 	<script src='../js/jquery.min.js'></script>
 </head>
@@ -24,15 +24,16 @@
 			<ul>
 			<li>查看结果</li>
 			<ul>
-				<li><a href="../manage/currentvote.php">当前投票结果</a></li>
+				<li>当前投票结果</li>
 				<li><a href="../manage/historyvote.php">历史投票结果</a></li>
-				<li><a href="../manage/commentlist.php">查看评论</a></li>
+				<li><a href="../manage/commentlist.php">查看本期评论</a></li>
+				<li><a href="../manage/historycomment.php">查看历史评论</a></li>
 			</ul>
 			<li><a href="../manage/setvote.php">投票期设置</a></li>
 			<li><a href="../manage/importstulist.php">学生选修课导入</a></li>
 			<li>课程管理</li>
 			<ul>
-				<li>指定授课教师</li>
+				<li><a href="../manage/managetch.php">指定授课教师</a></li>
 				<li><a href="../manage/addcourse.php">添加课程</a></li>
 				<li><a href="../manage/deletecourse.php">删除课程</a></li>
 			</ul>
@@ -45,26 +46,35 @@
 			</ul>
 		</div>
 		<div class="contentlist">
-			<form action="../manage/managetch_sub.php" method="post">
-				<ul>
-				<?php
-				foreach ($courseInfo as $key => $value) {
-					$num = $key + 1;
-					echo '<li>' . $num . '.' .  $value['coursename'] . '</li>';
-					echo '<li><select name="course_tch_' . $value['c_id'] . '">';
-					foreach ($tchInfo as $k => $v) {
-						echo '<option value="' . $v['t_id'] . '">' . $v['teachername'] . '</option>';
-					}
-					echo '</select></li>';
-					echo '<li>授课年级：<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_1" />大一';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_2" />大二';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_3" />大三';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_4" />大四</li>';
-				}
-				?>
-				</ul>
-				<input type="submit" value="提交">
-			</form>
+			<?php
+			foreach ($tchFromDb as $key => $value) {
+				$tch_course_sql = 'SELECT * from `courses` where `t_id`=' . $value['t_id'];
+				$tchCourseTmp = $db->query($tch_course_sql);
+				$tchcourseFromDb = $tchCourseTmp->fetchAll();
+
+				echo '<div class="tchcurrentvote">';
+					echo '<div class="tchinfo">';
+						echo '<img src=".' . $value['imgurl'] . '">';
+						echo '<p>' . $value['teachername'] . '</p>';
+					echo '</div>';
+					echo '<div class="currentvotelist">';
+						echo '<p>总鲜花数：' . $value['getflowers'] . '</p>';
+						echo '<p>总鸡蛋数：' . $value['geteggs'] . '</p>';
+						if(!empty($tchcourseFromDb)){
+							foreach ($tchcourseFromDb as $k => $v) {
+								$id = $k + 1;
+								echo '<ul>';
+								echo '<li>' . $id . '.' . $v['coursename'] . '鲜花数：' . $v['getflowers'] . '鸡蛋数：' . $v['geteggs'] . '</li>';
+								echo '</ul>';
+							}
+						}
+						else{
+							echo "无相关课程投票";
+						}
+					echo '</div>';
+				echo '</div>';
+			}
+			?>
 		</div>
 	</div>
 </body>

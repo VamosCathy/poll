@@ -44,8 +44,8 @@ else{
 		$_SESSION['eggnum'] -= $sumegg;
 		$_SESSION['voted'] = 1;
 
-		$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-		$db = new PDO($dsn,$conf['username'],$conf['password']);
+		require_once __DIR__ . '/../conf/conn.php';
+		
 	//更新学生表中的鲜花鸡蛋数量
 		$update_pollers_sql = 'UPDATE `pollers` set `flowernum`=' . $_SESSION['flowernum'] . ',`eggnum`=' . $_SESSION['eggnum'] . ',`voted`=1 WHERE `u_id`=' . $_SESSION['uid'];
 		$db->exec($update_pollers_sql);

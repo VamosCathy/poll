@@ -18,9 +18,7 @@ else{
 		$tid = $_POST['tid'];
 //header("Content-Type:text/html;charset=utf-8");
 
-//连接数据库
-		$dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
-		$db = new PDO($dsn,$conf['username'],$conf['password']);
+		require_once __DIR__ . '/../conf/conn.php';
 
 		$comment_sql = 'INSERT into `comments` (t_id,comment) values (' . $tid . ',\'' . $comment . '\')';
 		$db->exec($comment_sql);
