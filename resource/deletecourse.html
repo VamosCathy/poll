@@ -13,45 +13,45 @@
 				<a href="/">
 					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
 				</div>
-				<div class="dltime">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
-				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+	<a href="../setting.php">设置</a></div>
 				<!--change pwd & login out-->
 			</div>
 		</div>
 		<!--navigation-->
-		<div class="content">
+		<div class="current_bg">
 			<div class="functionarea">
 				<ul>
-					<li>查看结果</li>
-					<ul>
-						<li><a href="../manage/currentvote.php">当前投票结果</a></li>
-						<li><a href="../manage/historyvote.php">历史投票结果</a></li>
-						<li><a href="../manage/currentcomment.php">查看本期评论</a></li>
-						<li><a href="../manage/historycomment.php">查看历史评论</a></li>
-					</ul>
-					<li><a href="../manage/setvote.php">投票期设置</a></li>
-					<li><a href="../manage/importstulist.php">学生选修课导入</a></li>
-					<li>课程管理</li>
-					<ul>
-						<li><a href="../manage/managetch.php">指定授课教师</a></li>
-						<li><a href="../manage/addcourse.php">添加课程</a></li>
-						<li>删除课程</li>
-					</ul>
-					<li>教师管理</li>
-					<ul>
-						<li><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
-						<li><a href="../manage/addtch.php">添加教师</a></li>
-						<li><a href="../manage/deletetch.php">删除教师</a></li>
-					</ul>
+					<li class="first_flour">查看结果</li>
+					<li class="second_flour"><a href="../manage/currentvote.php">当前投票结果</a></li>
+					<li class="second_flour"><a href="../manage/historyvote.php">历史投票结果</a></li>
+					<li class="second_flour"><a href="../manage/currentcomment.php">查看本期评论</a></li>
+					<li class="second_flour"><a href="../manage/historycomment.php">查看历史评论</a></li>
+
+					<li class="first_flour"><a href="../manage/setvote.php">投票期设置</a></li>
+					<li class="first_flour"><a href="../manage/importstulist.php">学生选修课导入</a></li>
+					<li class="first_flour">课程管理</li>
+
+					<li class="second_flour"><a href="../manage/managetch.php">指定授课教师</a></li>
+					<li class="second_flour"><a href="../manage/addcourse.php">添加课程</a></li>
+					<li class="second_flour">删除课程</li>
+
+					<li class="first_flour">教师管理</li>
+
+					<li class="second_flour"><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
+					<li class="second_flour"><a href="../manage/addtch.php">添加教师</a></li>
+					<li class="second_flour"><a href="../manage/deletetch.php">删除教师</a></li>
+
 				</ul>
 			</div>
-			<div class="contentlist">
+			<div class="contentlist del_course_div">
 				<p>当前课程列表：</p>
 				<ul>
 					<?php
 					foreach ($allcoursesFromDb as $key => $value) {
 						$id = $key + 1;
-						echo '<li>' . $id . '.' . $value['coursename'] . '<input id="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" /></li>';
+						echo '<li>' . $id . '.&nbsp;' . $value['coursename'] . '&nbsp;&nbsp;<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:80px; text-align: center;margin-top:5px;margin-left:1%;" id="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" /></li>';
 					}
 					?>
 				</ul>

@@ -21,8 +21,9 @@
 				?>
 				</ul>
 			</div>
-			<div class="dltime">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
-			<div class="profile">你好，<?=$username ?></div>
+			<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+			<div class="profile">你好，<?=$username ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+	<a href="../setting.php">设置</a></div>
 			<!--change pwd & login out-->
 		</div>
 	</div>
@@ -35,14 +36,11 @@
 		</div>
 		<div class="comment">
 			<form action="comment_sub.php" method="post">
-				<textarea name="comment" cols="30" rows="9"></textarea>
-				<input type="hidden" name="tid" value="<?=$tchFromDb[0]['t_id']; ?>">
-				<input type="submit" value="提交">
+				<textarea name="comment" cols="66" rows="18"></textarea>
+				<input type="hidden" name="tid" value="<?=$tchFromDb[0]['t_id']; ?>" />
+				<input style="height:20px;width:60px;text-align:center;margin-right:11px;float:right;background:aqua;border:1px dashed aqua;cursor: pointer;margin-top:25px;color:white;font-size:14px;" type="submit" value="提交">
 			</form>
 			
 		</div>
-	</div>
-	<a href="../logout.php">登出</a>
-	<a href="../setting.php">设置</a>
-</body>
+	</div></body>
 </html>

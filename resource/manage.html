@@ -12,17 +12,18 @@
 			<div class="logo">
 				<a href="/">
 					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
-				</div>
+			</div>
 
-				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+	<a href="../setting.php">设置</a></div>
 				<!--change pwd & login out-->
 			</div>
 		</div>
 		<!--navigation-->
 
 		<div class="content">
-			<p>本期投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></p>
-			<ul>
+			<p style="width:100%;text-align: center;margin-top:10px;float:left;margin-bottom:10px;font-size:18px;color:red;">本期投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></p>
+			<ul class="manage">
 				<li><a href="currentvote.php">查看结果</a></li>
 				<li><a href="setvote.php">投票期设置</a></li>
 				<li><a href="importstulist.php">学生选修课导入</a></li>
@@ -30,7 +31,5 @@
 				<li><a href="updatetchinfo.php">教师管理</a></li>
 			</ul>
 		</div>
-		<a href="../logout.php">登出</a>
-		<a href="../setting.php">设置</a>
 	</body>
 	</html>

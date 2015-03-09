@@ -13,41 +13,41 @@
 				<a href="/">
 					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
 				</div>
-				<div class="dltime">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
-				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
+				<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+	<a href="../setting.php">设置</a></div>
 				<!--change pwd & login out-->
 			</div>
 		</div>
 		<!--navigation-->
-		<div class="content">
-			<div class="functionarea">
-				<ul>
-					<li>查看结果</li>
-					<ul>
-						<li><a href="../manage/currentvote.php">当前投票结果</a></li>
-						<li>历史投票结果</li>
-						<li><a href="../manage/commentlist.php">查看本期评论</a></li>
-						<li><a href="../manage/historycomment.php">查看历史评论</a></li>
-					</ul>
-					<li><a href="../manage/setvote.php">投票期设置</a></li>
-					<li><a href="../manage/importstulist.php">学生选修课导入</a></li>
-					<li>课程管理</li>
-					<ul>
-						<li><a href="../manage/managetch.php">指定授课教师</a></li>
-						<li><a href="../manage/addcourse.php">添加课程</a></li>
-						<li><a href="../manage/deletecourse.php">删除课程</a></li>
-					</ul>
-					<li>教师管理</li>
-					<ul>
-						<li><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
-						<li><a href="../manage/addtch.php">添加教师</a></li>
-						<li><a href="../manage/deletetch.php">删除教师</a></li>
-					</ul>
-				</ul>
-			</div>
+<div class="current_bg">
+		<div class="functionarea">
+			<ul>
+			<li class="first_flour">查看结果</li>
+			<li class="second_flour"><a href="../manage/currentvote.php">当前投票结果</a></li>
+			<li class="second_flour">历史投票结果</li>
+			<li class="second_flour"><a href="../manage/currentcomment.php">查看本期评论</a></li>
+			<li class="second_flour"><a href="../manage/historycomment.php">查看历史评论</a></li>
+			
+			<li class="first_flour"><a href="../manage/setvote.php">投票期设置</a></li>
+			<li class="first_flour"><a href="../manage/importstulist.php">学生选修课导入</a></li>
+			<li class="first_flour">课程管理</li>
+			
+			<li class="second_flour"><a href="../manage/managetch.php">指定授课教师</a></li>
+			<li class="second_flour"><a href="../manage/addcourse.php">添加课程</a></li>
+			<li class="second_flour"><a href="../manage/deletecourse.php">删除课程</a></li>
+			
+			<li class="first_flour">教师管理</li>
+			
+			<li class="second_flour"><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
+			<li class="second_flour"><a href="../manage/addtch.php">添加教师</a></li>
+			<li class="second_flour"><a href="../manage/deletetch.php">删除教师</a></li>
+			
+			</ul>
+		</div>
 			<div class="contentlist">
 			<div class="optionselect">
-				<select id="dlchoice">
+				<select id="dlchoice" style="margin:10px;">
 					<?php
 					foreach ($deadlineFromDb as $key => $value) {
 						echo '<option value="' . $value['dl_id'] . '">' . $value['vote_dl'] . '</option>';
@@ -73,18 +73,18 @@
 								testrepeat = n.teachername;
 								courseid = 1;
 								$(".resultlist").append("<div class=\"tchhistoryvote_" + teacherid + "\"></div>");
-								$(".tchhistoryvote_" + teacherid).append("<div class=\"tchinfo_" + teacherid + "\"></div>");
-								$(".tchhistoryvote_" + teacherid).append("<div class=\"historyvotelist_" + teacherid + "\"></div>");
-								$(".tchinfo_" + teacherid).append("<img src=\"." + n.imgurl + "\">");
+								$(".tchhistoryvote_" + teacherid).append("<div class=\"history_img tchinfo_" + teacherid + "\"></div>");
+								$(".tchhistoryvote_" + teacherid).append("<div class=\"historylist historyvotelist_" + teacherid + "\"></div>");
+								$(".tchinfo_" + teacherid).append("<img style=\"margin-left:10px;\" class=\"img-responsive\" src=\"." + n.imgurl + "\" />");
 								$(".tchinfo_" + teacherid).append("<p>" + n.teachername + "</p>");
 								$(".historyvotelist_" + teacherid).append("<p>总鲜花数：" + n.tch_flower + "</p>");
 								$(".historyvotelist_" + teacherid).append("<p>总鸡蛋数：" + n.tch_egg + "</p>");
 								$(".historyvotelist_" + teacherid).append("<ul class=\"courselist_" + teacherid + "\"></ul>");
-								$(".courselist_" + teacherid).append("<li>" + courseid + "." + n.coursename + "鲜花数：" + n.cs_flower + "鸡蛋数：" + n.cs_egg + "</li>");
+								$(".courselist_" + teacherid).append("<li>" + courseid + ".&nbsp;" + n.coursename + "&nbsp;&nbsp;&nbsp;鲜花数：" + n.cs_flower + "&nbsp;&nbsp;&nbsp;鸡蛋数：" + n.cs_egg + "</li>");
 							}//if
 							else{
 								courseid ++;
-								$(".courselist_" + teacherid).append("<li>" + courseid + "." + n.coursename + "鲜花数：" + n.cs_flower + "鸡蛋数：" + n.cs_egg + "</li>");
+								$(".courselist_" + teacherid).append("<li>" + courseid + ".&nbsp;" + n.coursename + "&nbsp;&nbsp;&nbsp;鲜花数：" + n.cs_flower + "&nbsp;&nbsp;&nbsp;鸡蛋数：" + n.cs_egg + "</li>");
 							}//else
 						});//each
 					});//getJSON

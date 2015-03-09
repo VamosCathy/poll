@@ -31,7 +31,7 @@ else{
 	$stuFromDb = $stuTmp->fetchAll();
 
 	if($voted == 0){
-		require_once __DIR__ . '/../resource/homeunvote.html';
+		require_once __DIR__ . 'resource/homeunvote.html';
 	}
 	else if($voted == 1){
 		require_once __DIR__ . '/../resource/homevoted.html';
