@@ -13,60 +13,63 @@
 				<a href="/">
 					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
 				</div>
-
-				<div class="profile">你好，<?=$_SESSION['username']; ?></div>
-				<!--change pwd & login out-->
+				<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+					<a href="../setting.php">设置</a></div>
+				</div>
 			</div>
-		</div>
-		<!--navigation-->
-		<div class="current_bg">
-			<div class="functionarea">
-				<ul>
-					<li class="first_flour">查看结果</li>
-					<li class="second_flour"><a href="../manage/currentvote.php">当前投票结果</a></li>
-					<li class="second_flour"><a href="../manage/historyvote.php">历史投票结果</a></li>
-					<li class="second_flour">查看本期评论</li>
-					<li class="second_flour"><a href="../manage/historycomment.php">查看历史评论</a></li>
+			<!--navigation-->
+			<div class="current_bg">
+				<div class="functionarea">
+					<ul>
+						<li class="first_flour">查看结果</li>
+						<li class="second_flour"><a href="../manage/currentvote.php">当前投票结果</a></li>
+						<li class="second_flour"><a href="../manage/historyvote.php">历史投票结果</a></li>
+						<li class="second_flour">查看本期评论</li>
+						<li class="second_flour"><a href="../manage/historycomment.php">查看历史评论</a></li>
 
-					<li class="first_flour"><a href="../manage/setvote.php">投票期设置</a></li>
-					<li class="first_flour"><a href="../manage/importstulist.php">学生选修课导入</a></li>
-					<li class="first_flour">课程管理</li>
+						<li class="first_flour"><a href="../manage/setvote.php">投票期设置</a></li>
+						<li class="first_flour"><a href="../manage/importstulist.php">学生选修课导入</a></li>
+						<li class="first_flour">课程管理</li>
 
-					<li class="second_flour"><a href="../manage/managetch.php">指定授课教师</a></li>
-					<li class="second_flour"><a href="../manage/addcourse.php">添加课程</a></li>
-					<li class="second_flour"><a href="../manage/deletecourse.php">删除课程</a></li>
+						<li class="second_flour"><a href="../manage/managetch.php">指定授课教师</a></li>
+						<li class="second_flour"><a href="../manage/addcourse.php">添加课程</a></li>
+						<li class="second_flour"><a href="../manage/deletecourse.php">删除课程</a></li>
 
-					<li class="first_flour">教师管理</li>
+						<li class="first_flour">教师管理</li>
 
-					<li class="second_flour"><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
-					<li class="second_flour"><a href="../manage/addtch.php">添加教师</a></li>
-					<li class="second_flour"><a href="../manage/deletetch.php">删除教师</a></li>
+						<li class="second_flour"><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
+						<li class="second_flour"><a href="../manage/addtch.php">添加教师</a></li>
+						<li class="second_flour"><a href="../manage/deletetch.php">删除教师</a></li>
 
-				</ul>
-			</div>
-			<div class="contentlist">
-				<?php
-				foreach ($tchInfo as $key => $value) {
-					echo '<div class="eachtch">';
-					echo '<div class="teacher-info">';
-					echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
-					echo '<p class="tch-name">' . $value['teachername'] . '</p>';
-					echo '</div>';
-					echo '<div class="tchcomment">';
-					$tch_comment_sql = 'SELECT * from `comments` where `t_id`=' . $value['t_id'];
-					$pdoTmp2 = $db->query($tch_comment_sql);
-					$tch_comment = $pdoTmp2->fetchAll();
-					echo '<ul>';
-					foreach ($tch_comment as $k => $v) {
-						$num = $k + 1;
-						echo '<li>' . $num . '.' . $v['comment'] . '</li>';
+					</ul>
+				</div>
+				<div class="contentlist">
+					<?php
+					foreach ($tchInfo as $key => $value) {
+						echo '<div class="eachtch">';
+						echo '<div class="teacher-info">';
+						echo '<a href="">';
+						echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
+						echo '<p class="tch-name">' . $value['teachername'] . '</p>';
+						echo '</a>';
+						echo '</div>';
+
+						// echo '<div class="tchcomment">';
+						// $tch_comment_sql = 'SELECT * from `comments` where `t_id`=' . $value['t_id'];
+						// $pdoTmp2 = $db->query($tch_comment_sql);
+						// $tch_comment = $pdoTmp2->fetchAll();
+						// echo '<ul>';
+						// foreach ($tch_comment as $k => $v) {
+						// 	$num = $k + 1;
+						// 	echo '<li>' . $num . '.' . $v['comment'] . '</li>';
+						// }
+						// echo '</ul>';
+						// echo '</div>';
+						// echo '</div>';
 					}
-					echo '</ul>';
-					echo '</div>';
-					echo '</div>';
-				}
-				?>
+					?>
+				</div>
 			</div>
-		</div>
-	</body>
-	</html>
+		</body>
+		</html>

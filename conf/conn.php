@@ -88,5 +88,29 @@ if(strtotime("now") > strtotime($dltimeFromDb[0]['vote_dl']) && $dltimeFromDb[0]
 	$confirm_dl_sql = 'UPDATE `deadline` set `istohistory`=1 where `iscurrent`=1';
 	$db->exec($confirm_dl_sql);
 }
+else{
+	//检测是否有需要开始的投票期
+	$setcurrent_sql = 'SELECT * from deadline where iscurrent=0 and istohistory=0';
+	$setcurrent_tmp = $db->query($setcurrent_sql);
+	$setcurrent_FromDb = $setcurrent_tmp->fetchAll();
+	if (!empty($setcurrent_FromDb)) {
+		foreach ($setcurrent_FromDb as $key => $value) {
+			if (strtotime("now") > strtotime($value['starttime'])) {
+				$udcurrent_sql = 'UPDATE deadline set iscurrent=1 where dl_id=' . $value['dl_id'];
+				$db->exec($udcurrent_sql);
+				$udlast_sql = 'UPDATE deadline set iscurrent=0 where iscurrent=1 and istohistory=1';
+				$db->exec($udlast_sql);
+				if ($db->errorCode() != '00000'){
+					$error = $db->errorInfo();
+					echo '错误: [',$error['1'],'] ',$error['2'];
+					die();
+				}
+				break;
+			}
+		}
+	}
+}
+
+
 
 ?>

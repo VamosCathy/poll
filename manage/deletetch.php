@@ -1,4 +1,5 @@
 <?php
+session_start();
 $conf = parse_ini_file(__DIR__ . '/../conf/db.ini');
 require_once __DIR__ . '/../conf/conn.php';
 $deletetch_sql = 'SELECT `t_id`,`teachername` from `teachers`';
