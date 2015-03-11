@@ -10,8 +10,8 @@ else{
 //输入合法性检测
 
 
-	$conf = parse_ini_file(__DIR__ . '/conf/db.ini');
-	require_once __DIR__ . '/conf/conn.php';
+	$conf = parse_ini_file(__DIR__ . '/../conf/db.ini');
+	require_once __DIR__ . '/../conf/conn.php';
 
 	$sql = 'SELECT * FROM `pollers` WHERE username=' . $username . ' LIMIT 1';
 
@@ -20,7 +20,7 @@ else{
 
 	if($InfoFromDb[0]['pwd'] == md5($password)){
 		if($username != $conf['manageid']){
-			header("Location:./stu/home.php");
+			header("Location:../stu/home.php");
 			$_SESSION['uid'] = $InfoFromDb[0]['u_id'];
 			$_SESSION['username'] = $username;
 			$_SESSION['voted'] = $InfoFromDb[0]['voted'];
@@ -28,7 +28,7 @@ else{
 			$_SESSION['eggnum'] = $InfoFromDb[0]['eggnum'];
 		}
 		else{
-			header("location:./manage/manage.php");
+			header("location:../manage/manage.php");
 			$_SESSION['uid'] = $InfoFromDb[0]['u_id'];
 			$_SESSION['username'] = $username;
 			$_SESSION['manage'] = 1;

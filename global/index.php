@@ -5,11 +5,11 @@ if(!isset($_SESSION['uid'])){
 	exit;
 }
 elseif (isset($_SESSION['uid']) && (!isset($_SESSION['manage']) || !$_SESSION['manage'])) {
-	require __DIR__ . '/stu/home.php';
+	require __DIR__ . '/../stu/home.php';
 	exit;
 }
 else{
-	require __DIR__ . '/manage/manage.php';
+	require __DIR__ . '/../manage/manage.php';
 	exit;
 }
 ?>

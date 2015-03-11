@@ -1,4 +1,5 @@
 <?php
+
 $dsn = 'mysql:host=' . $conf['host'] . ';port=' . $conf['port'] . ';dbname=' . $conf['dbname'] . ';charset=' . $conf['charset'];
 $db = new PDO($dsn,$conf['username'],$conf['password']);
 
@@ -84,9 +85,13 @@ if(strtotime("now") > strtotime($dltimeFromDb[0]['vote_dl']) && $dltimeFromDb[0]
 		die();
 	}
 
-		//本期数据转移到历史数据表中成功后确认
+	//本期数据转移到历史数据表中成功后确认
 	$confirm_dl_sql = 'UPDATE `deadline` set `istohistory`=1 where `iscurrent`=1';
 	$db->exec($confirm_dl_sql);
+
+	//停止投票
+	$stoppoll_sql = 'UPDATE pollers set voted=1';
+	$db->exec($stoppoll_sql);
 }
 else{
 	//检测是否有需要开始的投票期
@@ -105,6 +110,8 @@ else{
 					echo '错误: [',$error['1'],'] ',$error['2'];
 					die();
 				}
+				$resetfenum_sql = 'UPDATE pollers set flowernum=10,eggnum=5,voted=0';
+				$db->exec($resetfenum_sql);
 				break;
 			}
 		}
