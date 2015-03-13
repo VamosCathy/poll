@@ -14,7 +14,7 @@
 					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
 				</div>
 				<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
-				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../global/logout.php">登出</a>
 					<a href="../setting.php">设置</a></div>
 				</div>
 			</div>
@@ -49,17 +49,18 @@
 						<ul>
 							<li>课程名称：<input type="text" name="coursename" required /></li>
 							<li>授课教师：<select name="tid">
+							<option value="" selected="selected">--请选择--</option>
 								<?php
 								foreach ($tchInfo as $k => $v) {
 									echo '<option value="' . $v['t_id'] . '">' . $v['teachername'] . '</option>';
 								}
 								?>
-							</select></li>
-							<li>授课年级：
+							</select>&nbsp;*</li>
+							<!-- <li>授课年级：
 								<input type="checkbox" name="grade[]" value="grade_1" />大一
 								<input type="checkbox" name="grade[]" value="grade_2" />大二
 								<input type="checkbox" name="grade[]" value="grade_3" />大三
-								<input type="checkbox" name="grade[]" value="grade_4" />大四</li>
+								<input type="checkbox" name="grade[]" value="grade_4" />大四</li> -->
 							</ul>
 							<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:40px; text-align: center;margin-top:5px;margin-left:1%;" type="submit" value="添加">
 						</form>

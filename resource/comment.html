@@ -36,6 +36,14 @@
 		</div>
 		<div class="comment">
 			<form action="comment_sub.php" method="post">
+			<P>选择想要评价的课程：（可不选）<select  name="csname">
+				<option value="" selected="selected"></option>
+				<?php
+				foreach ($electiveFromDb as $key => $value) {
+					echo '<option value="' . $value['c_id'] . '">' . $value['coursename'] . '</option>';
+				}
+				?>
+			</select></P>
 				<textarea name="comment" cols="66" rows="18"></textarea>
 				<input type="hidden" name="tid" value="<?=$tchFromDb[0]['t_id']; ?>" />
 				<input style="height:20px;width:60px;text-align:center;margin-right:11px;float:right;background:aqua;border:1px dashed aqua;cursor: pointer;margin-top:25px;color:white;font-size:14px;" type="submit" value="提交">

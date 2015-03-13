@@ -30,22 +30,25 @@ else{
 			$c_id = intval($c_id_str);
 	//指定当前课程老师
 			if(strpos($key,"tch")){
-				$chng_tid_in_course = 'UPDATE `courses` SET `t_id`=' . $value . ',`getflowers`=0,`geteggs`=0 where `c_id`=' . $c_id;
-				$db->exec($chng_tid_in_course);
+				if ($value != NULL) {
+					$chng_tid_in_course = 'UPDATE `courses` SET `t_id`=' . $value . ' where `c_id`=' . $c_id;
+					$db->exec($chng_tid_in_course);
+				}
+				
 			}
 	//指定当前课程开课年级
-			elseif(strpos($key,"grade")){
-				$chng_grade_reset = 'UPDATE `courses` set `grade_1`=0,`grade_2`=0,`grade_3`=0,`grade_4`=0 where `c_id`=' . $c_id;
-				$db->exec($chng_grade_reset);
-				for($i=0;$i<count($value);$i++){
-					$chng_grade_in_course = 'UPDATE `courses` set `' . $value[$i] . '`=1 where `c_id`=' . $c_id;
-					$db->exec($chng_grade_in_course);
-				}
-				if ($db->errorCode() != '00000'){
-					$error = $db->errorInfo();
-					echo '错误: [',$error['1'],'] ',$error['2'];
-					die();
-				}
+			// elseif(strpos($key,"grade")){
+			// 	$chng_grade_reset = 'UPDATE `courses` set `grade_1`=0,`grade_2`=0,`grade_3`=0,`grade_4`=0 where `c_id`=' . $c_id;
+			// 	$db->exec($chng_grade_reset);
+			// 	for($i=0;$i<count($value);$i++){
+			// 		$chng_grade_in_course = 'UPDATE `courses` set `' . $value[$i] . '`=1 where `c_id`=' . $c_id;
+			// 		$db->exec($chng_grade_in_course);
+			// 	}
+			// }
+			if ($db->errorCode() != '00000'){
+				$error = $db->errorInfo();
+				echo '错误: [',$error['1'],'] ',$error['2'];
+				die();
 			}
 		}
 		header("location:managetch.php");

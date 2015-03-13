@@ -22,7 +22,7 @@
 				</ul>
 			</div>
 			<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
-			<div class="profile">你好，<?=$username ?><a style="margin-left:5px;" href="../logout.php">登出</a></div>
+			<div class="profile">你好，<?=$username ?><a style="margin-left:5px;" href="../global/logout.php">登出</a></div>
 			<!--change pwd & login out-->
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 	if(!empty($teacherData['tchinfo'])){
 		echo '<form action="../stu/submit.php" method="post">';
 		foreach ($teacherData['tchinfo'] as $key => $value) {
-			$coursesql = 'SELECT * from courses where t_id=' . $value['t_id'];
+			$coursesql = 'SELECT * from courses where t_id=' . $value['t_id'] . ' and c_id in (SELECT c_id from stucourses where u_id=' . $userid . ')';
 			$courseTmp = $db->query($coursesql);
 			$courseFromDb = $courseTmp->fetchAll();
 			$courseData = array();

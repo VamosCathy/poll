@@ -10,20 +10,27 @@ elseif ($_SESSION['username'] == $conf['manageid']) {
 	exit;
 }
 else{
-	if (empty($_POST)) {
+	if (empty($_POST) || $_POST['tid'] == NULL) {
 		echo "非法访问！";
 	}
 	else{
-		$comment = $_POST['comment'];
-		$tid = $_POST['tid'];
-//header("Content-Type:text/html;charset=utf-8");
-
 		require_once __DIR__ . '/../conf/conn.php';
-
-		$comment_sql = 'INSERT into `comments` (t_id,comment) values (' . $tid . ',\'' . $comment . '\')';
+		if ($_POST['comment'] == NULL) {
+			header("location:comment.php?tid=" . $_POST['tid']);
+		}
+		elseif ($_POST['csname'] == NULL) {
+			$comment_sql = 'INSERT into comments (t_id,comment) values (' . $_POST['tid'] . ',\'' . $_POST['comment'] . '\')';
+		}
+		else{
+			$comment_sql = 'INSERT into comments (t_id,comment,c_id) values (' . $_POST['tid'] . ',\'' . $_POST['comment'] . '\',' . $_POST['csname'] . ')';
+		}
 		$db->exec($comment_sql);
+		if ($db->errorCode() != '00000'){
+		$error = $db->errorInfo();
+		echo '错误: [',$error['1'],'] ',$error['2'];
+		die();
+	}
 		header("location:home.php");
-//echo "<script>alert('提交成功');</script>";
 	}
 }
 

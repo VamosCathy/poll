@@ -51,16 +51,19 @@
 				<?php
 				foreach ($courseInfo as $key => $value) {
 					$num = $key + 1;
-					echo '<li>' . $num . '.' .  $value['coursename'] . '</li>';
-					echo '<li><select name="course_tch_' . $value['c_id'] . '">';
+					if ($value['t_id'] == NULL) {
+						echo '<li>' . $num . '.' .  $value['coursename'] . '&nbsp;&nbsp;&nbsp;授课教师：未指定</li>';
+					}
+					else{
+						echo '<li>' . $num . '.' .  $value['coursename'] . '&nbsp;&nbsp;&nbsp;授课教师：' . $tchInfo[$value['t_id']-1]['teachername'] . '</li>';
+					}
+					
+					echo '<li>更改为：<select name="course_tch_' . $value['c_id'] . '">';
+					echo '<option selected value="">--请选择--</option>';
 					foreach ($tchInfo as $k => $v) {
 						echo '<option value="' . $v['t_id'] . '">' . $v['teachername'] . '</option>';
 					}
 					echo '</select></li>';
-					echo '<li>授课年级：<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_1" />大一';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_2" />大二';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_3" />大三';
-					echo '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="course_grade_' . $value['c_id'] . '[]" value="grade_4" />大四</li>';
 				}
 				?>
 				</ul>

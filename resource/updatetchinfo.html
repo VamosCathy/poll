@@ -48,6 +48,7 @@
 				<div class="contentlist">
 					<div class="optionselect">
 						<select id="tchinfoid">
+							<option value="" selected="selected">--请选择--</option>
 							<?php
 							foreach ($tchinfoFromDb as $key => $value) {
 								echo '<option value="' . $value['t_id'] . '">' . $value['teachername'] . '</option>';
