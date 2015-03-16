@@ -47,7 +47,8 @@
 		</div>
 			<div class="contentlist">
 			<div class="optionselect">
-				请选择投票结束时间：<select id="dlchoice" style="margin:10px;">
+				投票结束时间：<select id="dlchoice" style="margin:10px;">
+				<option value="" selected="selected">--请选择--</option>
 					<?php
 					foreach ($deadlineFromDb as $key => $value) {
 						echo '<option value="' . $value['dl_id'] . '">' . $value['vote_dl'] . '</option>';

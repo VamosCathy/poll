@@ -42,15 +42,18 @@ else{
 	else{
 		$_SESSION['flowernum'] -= $sumflower;
 		$_SESSION['eggnum'] -= $sumegg;
-		$_SESSION['voted'] = 1;
 
 		require_once __DIR__ . '/../conf/conn.php';
 		
 	//更新学生表中的鲜花鸡蛋数量
-		$update_pollers_sql = 'UPDATE `pollers` set `flowernum`=' . $_SESSION['flowernum'] . ',`eggnum`=' . $_SESSION['eggnum'] . ',`voted`=1 WHERE `u_id`=' . $_SESSION['uid'];
+		if ($_SESSION['flowernum'] == 0 && $_SESSION['eggnum'] == 0) {//若正好将所有鲜花和鸡蛋的余量用完，则关闭投票
+			$update_pollers_sql = 'UPDATE `pollers` set `flowernum`=' . $_SESSION['flowernum'] . ',`eggnum`=' . $_SESSION['eggnum'] . ',`voted`=1 WHERE `u_id`=' . $_SESSION['uid'];
+			$_SESSION['voted'] = 1;
+		}
+		else{
+			$update_pollers_sql = 'UPDATE `pollers` set `flowernum`=' . $_SESSION['flowernum'] . ',`eggnum`=' . $_SESSION['eggnum'] . ' WHERE `u_id`=' . $_SESSION['uid'];
+		}
 		$db->exec($update_pollers_sql);
-
-		
 
 	//取出每个老师上的不同课程的鲜花和鸡蛋
 		foreach ($_POST as $key => $value) {
@@ -80,6 +83,7 @@ else{
 			$db->exec($update_courses_sql);
 			$db->exec($update_teachers_sql);
 		}
+		// echo $_SESSION['voted'];
 		header("Location:home.php");
 	}
 }

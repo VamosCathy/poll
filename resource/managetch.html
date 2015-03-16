@@ -55,7 +55,7 @@
 						echo '<li>' . $num . '.' .  $value['coursename'] . '&nbsp;&nbsp;&nbsp;授课教师：未指定</li>';
 					}
 					else{
-						echo '<li>' . $num . '.' .  $value['coursename'] . '&nbsp;&nbsp;&nbsp;授课教师：' . $tchInfo[$value['t_id']-1]['teachername'] . '</li>';
+						echo '<li>' . $num . '.' .  $value['coursename'] . '&nbsp;&nbsp;&nbsp;授课教师：' . $tchInfo[$value['t_id']-1]['teachername'] . '&nbsp;&nbsp;&nbsp;课程号：' . $value['c_code'] . '</li>';
 					}
 					
 					echo '<li>更改为：<select name="course_tch_' . $value['c_id'] . '">';

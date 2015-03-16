@@ -46,14 +46,17 @@
 				</div>
 				<div class="contentlist">
 					<?php
-					foreach ($tchInfo as $key => $value) {
-						echo '<div class="eachtch">';
-						echo '<div class="teacher-info">';
-						echo '<a href="">';
-						echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
-						echo '<p class="tch-name">' . $value['teachername'] . '</p>';
-						echo '</a>';
-						echo '</div>';
+					if (empty($tchInfo)) {
+						echo '<p>暂无评论</p>';
+					}
+					else{
+						foreach ($tchInfo as $key => $value) {
+							echo '<div class="teacher-info">';
+							echo '<a href="sp_currentcomment.php?tid=' . $value['t_id'] . '">';
+							echo '<img src=".' . $value['imgurl'] . '" class="img-responsive" alt="" />';
+							echo '<p class="tch-name">' . $value['teachername'] . '</p>';
+							echo '</a>';
+							echo '</div>';
 
 						// echo '<div class="tchcomment">';
 						// $tch_comment_sql = 'SELECT * from `comments` where `t_id`=' . $value['t_id'];
@@ -66,8 +69,9 @@
 						// }
 						// echo '</ul>';
 						// echo '</div>';
-						// echo '</div>';
+						}
 					}
+					
 					?>
 				</div>
 			</div>
