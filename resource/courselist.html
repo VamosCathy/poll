@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>课程信息列表 | 信息安全系在线投票</title>
+	<link rel="stylesheet" href="../css/home.css" media="screen" type="text/css" />
+	<script src='../js/jquery.min.js'></script>
+</head>
+<body>
+	<div class="navigation">
+		<div class="nav-content">
+			<div class="logo">
+				<a href="/">
+					<img src="../images/logo.png" id="logo-picture" alt="浙江工商大学"></a>
+				</div>
+				<div class="dltime" style="float:left;margin-top:13px;">投票截止时间：<?=$dltimeFromDb[0]['vote_dl'] ?></div>
+				<div class="profile">你好，<?=$_SESSION['username']; ?><a style="margin-left:5px;" href="../logout.php">登出</a>
+					<a href="../setting.php">设置</a></div>
+					<!--change pwd & login out-->
+				</div>
+			</div>
+			<!--navigation-->
+			<div class="current_bg">
+				<div class="functionarea">
+					<ul>
+						<li class="first_flour">查看结果</li>
+						<li class="second_flour"><a href="../manage/currentvote.php">当前投票结果</a></li>
+						<li class="second_flour"><a href="../manage/historyvote.php">历史投票结果</a></li>
+						<li class="second_flour"><a href="../manage/currentcomment.php">查看本期评论</a></li>
+						<li class="second_flour"><a href="../manage/historycomment.php">查看历史评论</a></li>
+						<li class="first_flour"><a href="../manage/setvote.php">投票期设置</a></li>
+						<li class="first_flour">课程管理</li>
+						<li class="second_flour"><a href="updatecourseinfo.php">课程信息更新</a></li>
+						<li class="second_flour"><a href="courselist.php">课程信息列表</a></li>
+						<li class="first_flour">教师管理</li>
+						<li class="second_flour"><a href="../manage/updatetchinfo.php">更新教师信息</a></li>
+						<li class="second_flour"><a href="../manage/addtch.php">添加教师</a></li>
+						<li class="second_flour"><a href="../manage/deletetch.php">删除教师</a></li>
+
+					</ul>
+				</div>
+				<div class="contentlist">
+					<ul>
+						<?php
+						foreach ($courseFromDb as $key => $value) {
+							$num = $key + 1;
+							$flag = 0;
+
+							//显示课程名称
+							echo '<li>' . $num . '.&nbsp;' .  $value['coursename'];
+
+							//显示授课教师
+							if ($value['t_id'] == NULL) {//若未指定授课老师
+								echo '&nbsp;&nbsp;&nbsp;授课教师：未指定';
+							}
+							else{
+								foreach ($tchFromDb as $k => $v) {//查找授课老师是否依旧存在于教师表中，防止删除教师后信息出错
+									if ($v['t_id'] == $value['t_id']) {//存在则标记一下，并记录下教师名
+										$flag = 1;
+										$tchname = $v['teachername'];
+										break;
+									}
+								}
+								if ($flag == 1) {//教师存在
+									echo '&nbsp;&nbsp;&nbsp;授课教师：' . $tchname . '&nbsp;&nbsp;&nbsp;课程号：';
+								}
+								else{//教师已被删除
+									echo '&nbsp;&nbsp;&nbsp;授课教师：无&nbsp;&nbsp;&nbsp;课程号：';
+								}
+							}
+
+							//显示课程号
+							if ($value['c_code'] == NULL) {
+								echo "无";
+								echo '&nbsp;&nbsp;&nbsp;<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:80px; text-align: center;margin-top:5px;margin-left:1%;" class="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" />';
+								echo "</li>";
+							}
+								else{//根据学期判断是否可删除该课程，若课程号显示为当前学期则不可删除
+									echo $value['c_code'];
+									$course_semester = substr($value['c_code'],1,11);//取出课程号表示的学期
+									$current_semester = intval(date("Ym"));
+									if (substr($course_semester,-1) === '2') {//下学期课程
+										$second_year = substr($course_semester,5,4);
+										$month_tmp = intval($second_year) * 100;
+										if ($current_semester > ($month_tmp + 8) || $current_semester < ($month_tmp + 3)) {//不在学期范围则提供删除键(不在第二年的三月到八月范围内)
+											echo '&nbsp;&nbsp;&nbsp;<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:80px; text-align: center;margin-top:5px;margin-left:1%;" class="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" />';
+										}
+									}
+									elseif (substr($course_semester,-1) === '1') {//上学期课程
+										$first_year = substr($course_semester,0,4);
+										$second_year = substr($course_semester,5,4);
+										$month_tmp1 = intval($first_year) * 100;
+										$month_tmp2 = intval($second_year) * 100;
+										if ($current_semester < ($month_tmp1 + 9) || $current_semester > ($month_tmp2 + 2)) {//不在第一年九月到第二年二月的范围内
+											echo '&nbsp;&nbsp;&nbsp;<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:80px; text-align: center;margin-top:5px;margin-left:1%;" class="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" />';
+										}
+									}
+									else{
+										echo "Something's wrong.";
+									}
+								}
+								echo '</li>';
+
+							}
+							?>
+						</ul>
+					</div>
+					<script type="text/javascript">
+						$(".deletecourseid").click(function(){
+							var cid = $(this).next().val();
+							$.post("deletecourse_sub.php",{"cid":cid},function(result){
+								alert(result);
+								window.location = "courselist.php";
+							})
+						})
+					</script>
+				</div>
+			</body>
+			</html>
