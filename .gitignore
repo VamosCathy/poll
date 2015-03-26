@@ -1,3 +1,4 @@
 *.xls
 db.ini
 *.jpg
+.DS_Store

@@ -62,14 +62,15 @@
 									}
 								}
 								if ($flag == 1) {//教师存在
-									echo '&nbsp;&nbsp;&nbsp;授课教师：' . $tchname . '&nbsp;&nbsp;&nbsp;课程号：';
+									echo '&nbsp;&nbsp;&nbsp;授课教师：' . $tchname;
 								}
 								else{//教师已被删除
-									echo '&nbsp;&nbsp;&nbsp;授课教师：无&nbsp;&nbsp;&nbsp;课程号：';
+									echo '&nbsp;&nbsp;&nbsp;授课教师：无';
 								}
 							}
 
 							//显示课程号
+							echo '&nbsp;&nbsp;&nbsp;课程号：';
 							if ($value['c_code'] == NULL) {
 								echo "无";
 								echo '&nbsp;&nbsp;&nbsp;<input style="background:aqua;cursor:pointer;border:1px solid aqua;height:20px;line-height:16px;width:80px; text-align: center;margin-top:5px;margin-left:1%;" class="deletecourseid" type="button" value="删除该课程" /><input type="hidden" value="' . $value['c_id'] . '" />';

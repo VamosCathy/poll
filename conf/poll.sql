@@ -26,7 +26,23 @@ CREATE TABLE `comments` (
   `cmt_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `t_id` int(10) unsigned DEFAULT NULL,
   `comment` text NOT NULL,
+  `c_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cmt_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `courseassistants`
+--
+
+DROP TABLE IF EXISTS `courseassistants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `courseassistants` (
+  `ca_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `c_id` int(10) unsigned DEFAULT NULL,
+  `teachername` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ca_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,15 +56,9 @@ DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `c_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `coursename` varchar(20) DEFAULT NULL,
-  `t_id` int(10) unsigned DEFAULT NULL,
-  `getflowers` int(10) DEFAULT '0',
-  `geteggs` int(10) DEFAULT '0',
-  `grade_1` int(2) DEFAULT '0',
-  `grade_2` int(2) DEFAULT '0',
-  `grade_3` int(2) DEFAULT '0',
-  `grade_4` int(2) DEFAULT '0',
+  `c_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`c_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +75,7 @@ CREATE TABLE `deadline` (
   `istohistory` int(2) DEFAULT '0',
   `starttime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`dl_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +93,7 @@ CREATE TABLE `historyCourse` (
   `vote_dl` datetime DEFAULT CURRENT_TIMESTAMP,
   `t_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`hc_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +110,7 @@ CREATE TABLE `historyTch` (
   `tch_egg` int(10) unsigned DEFAULT '0',
   `vote_dl` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ht_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,8 +125,9 @@ CREATE TABLE `historycomments` (
   `t_id` int(10) unsigned DEFAULT NULL,
   `comment` text,
   `vote_dl` datetime DEFAULT CURRENT_TIMESTAMP,
+  `c_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`hcmt_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +145,7 @@ CREATE TABLE `pollers` (
   `eggnum` int(10) DEFAULT '5',
   `voted` int(2) DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +160,24 @@ CREATE TABLE `stucourses` (
   `u_id` int(10) unsigned DEFAULT NULL,
   `c_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`sc_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=114 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tchcourses`
+--
+
+DROP TABLE IF EXISTS `tchcourses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tchcourses` (
+  `tc_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `c_id` int(10) unsigned DEFAULT NULL,
+  `t_id` int(10) unsigned DEFAULT NULL,
+  `getflowers` int(10) DEFAULT '0',
+  `geteggs` int(10) DEFAULT '0',
+  PRIMARY KEY (`tc_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,8 +191,6 @@ CREATE TABLE `teachers` (
   `t_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `teachername` varchar(255) DEFAULT NULL,
   `imgurl` varchar(255) DEFAULT NULL,
-  `getflowers` int(10) DEFAULT '0',
-  `geteggs` int(10) DEFAULT '0',
   `aboutVoter` text NOT NULL,
   PRIMARY KEY (`t_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
@@ -179,4 +205,4 @@ CREATE TABLE `teachers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-31 21:00:21
+-- Dump completed on 2015-03-19 11:03:37

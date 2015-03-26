@@ -8,80 +8,108 @@ $dltime_sql = 'SELECT * from `deadline` where `iscurrent`=1 limit 1';
 $timeTmp = $db->query($dltime_sql);
 $dltimeFromDb = $timeTmp->fetchAll();
 
-//检测当期投票是否到期
+
+
+//---------检测当期投票是否到期----------------
+
+
 date_default_timezone_set("Asia/Shanghai");
 
 if(strtotime("now") > strtotime($dltimeFromDb[0]['vote_dl']) && $dltimeFromDb[0]['istohistory'] == 0){//如果当前时间超过规定的截止时间并且没有登记到历史数据表中
 	//将本期的数据复制到历史期的数据表中
 
-	//teachers表数据转移
-	$nowtohistory_tch_sql = 'SELECT * from `teachers`';
-	$nowtohistory_tch_tmp = $db->query($nowtohistory_tch_sql);
-	$nowtohistory_tch_FromDb = $nowtohistory_tch_tmp->fetchAll();
-	if(!empty($nowtohistory_tch_FromDb)){
-		foreach ($nowtohistory_tch_FromDb as $key => $value) {
-				//echo $value['t_id'];
-			$nowtohistory_ud_htch_sql = 'INSERT into `historyTch` (t_id,tch_flower,tch_egg,vote_dl) values (' . $value['t_id'] . ',' . $value['getflowers'] . ',' . $value['geteggs'] . ',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
-			$tmp2 = $db->exec($nowtohistory_ud_htch_sql);
-			if ($db->errorCode() != '00000'){
-				$error = $db->errorInfo();
-				echo '错误: [',$error['1'],'] ',$error['2'];
-				die();
-			}
-		}
-	}
-	$nowtohistory_reset_tch_sql = 'UPDATE `teachers` set `getflowers`=0,`geteggs`=0';
-	$db->exec($nowtohistory_reset_tch_sql);
+
+
+	//-------教师得票：tchcourses->historyTch--------
+
+	$nowtohistory_tchcourse_sql = 'SELECT * from tchcourses order by t_id';
+	$nowtohistory_tchcourse_tmp = $db->query($nowtohistory_tchcourse_sql);
 	if ($db->errorCode() != '00000'){
-		$error = $db->errorInfo();
-		echo '错误: [',$error['1'],'] ',$error['2'];
 		die();
 	}
+	$nowtohistory_tchcourse_FromDb = $nowtohistory_tchcourse_tmp->fetchAll();
+
+	if(!empty($nowtohistory_tchcourse_FromDb)){
+		$t_id_tmp = $nowtohistory_tchcourse_FromDb[0]['t_id'];
+		$sum_tch_flowers = 0;
+		$sum_tch_eggs = 0;
+
+		$num = count($nowtohistory_tchcourse_FromDb,0);
+		$count_num = 0;
+		foreach ($nowtohistory_tchcourse_FromDb as $key => $value) {
+			$count_num += 1;
+			if ($value['t_id'] === $t_id_tmp) {
+				$sum_tch_flowers += $value['getflowers'];
+				$sum_tch_eggs += $value['geteggs'];
+			}
+			else{
+				//将到上一个循环为止的数据记录到historyTch中
+				$nowtohistory_ud_htch_sql = 'INSERT into historyTch (t_id,tch_flower,tch_egg,vote_dl) values (' . $t_id_tmp . ',' . $sum_tch_flowers . ',' . $sum_tch_eggs . ',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
+				$tmp2 = $db->exec($nowtohistory_ud_htch_sql);
+				if ($db->errorCode() != '00000'){
+					die();
+				}
+				$t_id_tmp = $value['t_id'];
+				$sum_tch_flowers = $value['getflowers'];
+				$sum_tch_eggs = $value['geteggs'];
+			}
+			if ($count_num == $num) {//迁移最后一条数据
+				$nowtohistory_ud_htch_sql = 'INSERT into historyTch (t_id,tch_flower,tch_egg,vote_dl) values (' . $t_id_tmp . ',' . $sum_tch_flowers . ',' . $sum_tch_eggs . ',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
+				$tmp2 = $db->exec($nowtohistory_ud_htch_sql);
+				if ($db->errorCode() != '00000'){
+					die();
+				}
+			}		
+		}
+	}
+
+	//-------教师得票：tchcourses->historyTch--------
 
 
-		//courses表数据转移
-	$nowtohistory_course_sql = 'SELECT * from `courses`';
-	$nowtohistory_course_tmp = $db->query($nowtohistory_course_sql);
-	$nowtohistory_course_FromDb = $nowtohistory_course_tmp->fetchAll();
-	if(!empty($nowtohistory_course_FromDb)){
-		foreach ($nowtohistory_course_FromDb as $key => $value) {
+
+	//-------课程得票：tchcourses->hisorycourse------
+
+	if(!empty($nowtohistory_tchcourse_FromDb)){
+		foreach ($nowtohistory_tchcourse_FromDb as $key => $value) {
 			$nowtohistory_ud_hcs_sql = 'INSERT into `historyCourse` (c_id,t_id,cs_flower,cs_egg,vote_dl) values (' . $value['c_id'] . ',' . $value['t_id'] . ',' . $value['getflowers'] . ',' . $value['geteggs'] . ',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
 			$db->exec($nowtohistory_ud_hcs_sql);
 		}
 		if ($db->errorCode() != '00000'){
-			$error = $db->errorInfo();
-			echo '错误: [',$error['1'],'] ',$error['2'];
 			die();
 		}
 	}
-	$nowtohistory_reset_cs_sql = 'UPDATE `courses` set `getflowers`=0,`geteggs`=0';
-	$db->exec($nowtohistory_reset_cs_sql);
+
+	//-------课程得票：tchcourses->hisorycourse------
+
+
+	//-------tchcourses表格票数归零----------
+	$nowtohistory_reset_tch_sql = 'UPDATE tchcourses set `getflowers`=0,`geteggs`=0';
+	$db->exec($nowtohistory_reset_tch_sql);
 	if ($db->errorCode() != '00000'){
-		$error = $db->errorInfo();
-		echo '错误: [',$error['1'],'] ',$error['2'];
 		die();
 	}
+	//-------tchcourses表格票数归零----------
 
-		//comments表数据转移
+
+
+	//--------评论迁移：comments->historycomments-----
+
 	$nowtohistory_cmt_sql = 'SELECT * from `comments`';
 	$nowtohistory_cmt_tmp = $db->query($nowtohistory_cmt_sql);
 	$nowtohistory_cmt_FromDb = $nowtohistory_cmt_tmp->fetchAll();
 	if(!empty($nowtohistory_cmt_FromDb)){
 		foreach ($nowtohistory_cmt_FromDb as $key => $value) {
-			$nowtohistory_ud_hcmt_sql = 'INSERT into `historyComments` (t_id,comment,vote_dl) values (' . $value['t_id'] . ',\'' . $value['comment'] . '\',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
+			$nowtohistory_ud_hcmt_sql = 'INSERT into `historyComments` (t_id,c_id,comment,vote_dl) values (' . $value['t_id'] . ',' . $value['c_id'] . ',\'' . $value['comment'] . '\',\'' . $dltimeFromDb[0]['vote_dl'] . '\')';
 			$db->exec($nowtohistory_ud_hcmt_sql);
+			if ($db->errorCode() != '00000'){
+				die();
+			}
 		}
-		if ($db->errorCode() != '00000'){
-			$error = $db->errorInfo();
-			echo '错误: [',$error['1'],'] ',$error['2'];
-			die();
-		}
+		
 	}
 	$nowtohistory_reset_cmt_sql = 'TRUNCATE table `comments`';
 	$db->exec($nowtohistory_reset_cmt_sql);
 	if ($db->errorCode() != '00000'){
-		$error = $db->errorInfo();
-		echo '错误: [',$error['1'],'] ',$error['2'];
 		die();
 	}
 
@@ -117,7 +145,7 @@ else{
 		}
 	}
 }
-
+//---------检测当期投票是否到期----------------
 
 
 ?>
